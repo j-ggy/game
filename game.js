@@ -8,6 +8,4 @@ const mage = new Mage('Muff');
 
 console.log(fencer);
 console.log(zombie);
-console.log(zombie.pets[0]);
 console.log(mage);
-console.log(mage.pets[0]);
