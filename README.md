@@ -19,7 +19,7 @@ The character's damage is calculated using thie algorithm:
 
 ## Pet Logic
 
-A character can have an array of pets but can only summomn one active pet.
+A character can have an array of pets but can only summon one active pet.
 
 ## Spell Logic
 

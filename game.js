@@ -22,8 +22,8 @@ console.log(zombie.name + " does " + zombie.getDamage()+ " magic damage!");
 console.log(zombie.name + " healed " + (zombie.health - zombie.lastHP));
 console.log(fencer.name + " does " + fencer.getDamage() + " physical damage! ..... good job");
 
-console.log("Heal test");
+console.log("~ Heal test ~");
 mage.selectSpell("heal");
-console.log(mage.health + " hp");
+console.log(mage.health, " hp");
 console.log(mage.getDamage());
 console.log(mage.health, " hp");
