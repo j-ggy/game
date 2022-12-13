@@ -1,5 +1,7 @@
 const Spells = require("../Spells/spells");
 
+//main functions for character creation, damage, pets, weapons and spells.
+
 class Character {
     constructor(name, className, attack, magic, defense, speed, health, mana) {
         this.name = name;
