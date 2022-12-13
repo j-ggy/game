@@ -16,6 +16,8 @@ class Character {
         this.spells = [];
         this.activePet = null;
         this.activeSpell = null;
+        this.activeWeapon = null;
+        this.lastHP = null;
     }
     levelUp() {
         this.level += 1;
@@ -51,19 +53,25 @@ class Character {
             const petDamage = this.activePet.petDmg;
             const magicDamage = this.magic;
             damageDealt = magicDamage + petDamage;
-        } if (this.activeSpell && this.mana > this.activeSpell.manaCost) {
+        }         
+        if (this.activeSpell && this.mana > this.activeSpell.manaCost) {
             const spellDamage = this.activeSpell.power;
             damageDealt += spellDamage;
             this.mana = this.mana - this.activeSpell.manaCost;
             if (this.mana < this.activeSpell.manaCost) {
                 activeSpell = null;
             }
-        } else if (!this.activePet && !this.activeSpell) {
-            if (this.weapons) {
-                damageDealt = this.weapons.damage + this.attack;
-            } else if (!this.weapons) {
+        }
+        else if (this.activePet === null && this.activeSpell === null) {
+            if (this.activeWeapon) {
+                damageDealt = this.activeWeapon.damage + this.attack;                
+            } else if (!this.activeWeapon) {
                 damageDealt=0;
             }
+        }
+        if (this.className === "zombie") {
+            this.lastHP = this.health;
+            this.health += (damageDealt/2);
         }
         return damageDealt;
     }
@@ -84,8 +92,13 @@ class Character {
             }
         }
     }
-    equipWeapon(weapon) {
-        this.weapons.push(weapon);
+    equipWeapon(weaponName) {
+        for (let i=0; i < this.weapons.length; i++) {
+            const weapon = this.weapons[i];
+            if (weapon.name === weaponName) {
+                this.activeWeapon = weapon;
+            }
+        }
     }
 }
 

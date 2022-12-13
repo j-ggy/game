@@ -16,11 +16,9 @@ mage.summonPet("smaller mage");
 mage.selectSpell("lightningbolt");
 zombie.selectSpell("drain");
 
-console.log(mage);
-// console.log(zombie.getDamage());
-// console.log(fencer.getDamage());
+console.log(mage.name + " does " + mage.getDamage() + " magic damage!");
+console.log(mage.activePet.petDmg + " from pet. " + mage.activeSpell.power + " from spell. " + mage.magic + " from base damage.")
+console.log(zombie.name + " does " + zombie.getDamage()+ " magic damage!");
+console.log(zombie.name + " healed " + (zombie.health - zombie.lastHP));
+console.log(fencer.name + " does " + fencer.getDamage() + " physical damage!");
 
-for (let i=0; i < 25; i++) {
-    console.log(mage.getDamage());
-    console.log(mage.mana);
-}
