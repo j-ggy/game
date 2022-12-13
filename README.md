@@ -20,3 +20,7 @@ The character's damage is calculated using thie algorithm:
 ## Pet Logic
 
 A character can have an array of pets but can only summomn one active pet.
+
+## Spell Logic
+
+If spell has positive power value, it's damaging. If it has negative power, it's healing.

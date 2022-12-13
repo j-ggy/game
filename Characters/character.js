@@ -49,21 +49,30 @@ class Character {
 
     getDamage() {
         var damageDealt = 0;
+        var healing = 0;
         if (this.activePet) {
             const petDamage = this.activePet.petDmg;
             const magicDamage = this.magic;
             damageDealt = magicDamage + petDamage;
         }         
         if (this.activeSpell && this.mana > this.activeSpell.manaCost) {
-            const spellDamage = this.activeSpell.power;
-            damageDealt += spellDamage;
+
+            const spellPower = this.activeSpell.power;
+            const powerSign = Math.sign(this.activeSpell.power);
+
+            if (powerSign === 1) {
+                damageDealt += spellPower;
+            } else if (powerSign === -1) {
+                healing -= spellPower;
+            }
+            
             this.mana = this.mana - this.activeSpell.manaCost;
             if (this.mana < this.activeSpell.manaCost) {
                 activeSpell = null;
             }
         if (this.className === "zombie") {
             this.lastHP = this.health;
-            this.health += (damageDealt/2);
+            healing = (damageDealt/2);
         }
         }
         else if (this.activePet === null && this.activeSpell === null) {
@@ -73,6 +82,7 @@ class Character {
                 damageDealt=0;
             }
         }
+        this.health += healing;
         return damageDealt;
     }
 
