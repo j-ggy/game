@@ -22,28 +22,28 @@ class Character {
     levelUp() {
         this.level += 1;
         if (this.className === "fencer") {
-            this.attack += 1;
+            this.attack += 2;
             this.magic += 1;
-            this.defense += 1;
-            this.speed += 1;
-            this.health += 1;
-            this.mana += 1;
+            this.defense += 4;
+            this.speed += 3;
+            this.health += 20;
+            this.mana += 5;
 
         } else if (this.className === "mage") {
             this.attack += 1;
-            this.magic += 1;
-            this.defense += 1;
-            this.speed += 1;
-            this.health += 1;
-            this.mana += 1;
+            this.magic += 2;
+            this.defense += 2;
+            this.speed += 2;
+            this.health += 10;
+            this.mana += 20;
 
         } else if (this.className === "zombie") {
-            this.attack += 1;
-            this.magic += 1;
-            this.defense += 1;
-            this.speed += 1;
-            this.health += 1;
-            this.mana += 1;
+            this.attack += 3;
+            this.magic += 3;
+            this.defense += 3;
+            this.speed += 3;
+            this.health += 15;
+            this.mana += 15;
         }
     }
 
@@ -61,6 +61,10 @@ class Character {
             if (this.mana < this.activeSpell.manaCost) {
                 activeSpell = null;
             }
+        if (this.className === "zombie") {
+            this.lastHP = this.health;
+            this.health += (damageDealt/2);
+        }
         }
         else if (this.activePet === null && this.activeSpell === null) {
             if (this.activeWeapon) {
@@ -68,10 +72,6 @@ class Character {
             } else if (!this.activeWeapon) {
                 damageDealt=0;
             }
-        }
-        if (this.className === "zombie") {
-            this.lastHP = this.health;
-            this.health += (damageDealt/2);
         }
         return damageDealt;
     }

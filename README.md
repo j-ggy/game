@@ -7,7 +7,7 @@ The fencer will be attack damage only, high speed and health.
 
 The Mage will have access to the lightning bolt and heal spells and start with a smaller mage pet. It will have medium health, high mana and high magic attack.
 
-The Zombie will use the drain spell which heals itself as well as doing damage. It will start with a rodent of underwhelming size pet. It will be well rounded and slow.
+The Zombie will use the drain spell which heals half of damage dealt. It will start with a rodent of underwhelming size pet. It will be well rounded and slow.
 
 ## Game Rules
 
