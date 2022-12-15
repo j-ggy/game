@@ -1,7 +1,8 @@
 class Weapon {
-    constructor(name, damage) {
+    constructor(name, damage, accessory) {
         this.name = name;
         this.damage = damage;
+        this.accessory = accessory;
     }
 }
 

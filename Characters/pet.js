@@ -1,7 +1,7 @@
 class Pet {
-    constructor(name, petDmg) {
+    constructor(name, damage) {
         this.name = name;
-        this.petDmg = petDmg;
+        this.damage = damage;
     }
 }
 

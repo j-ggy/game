@@ -1,26 +1,62 @@
-# game readme
+# game rules for GAMENAME
 
-In this game, we create characters, and pit them against each other until one wins.
+- Text style
+- Turn based
+- Tarantula?
 
+Your village is being ransacked by an neutral-evil group of monsters led by a big ass-spider. 
 
-The fencer will be attack damage only, high speed and health.
+Your three best (and only) villagers decide to take the fight back to the monsters. 
 
-The Mage will have access to the lightning bolt and heal spells and start with a smaller mage pet. It will have medium health, high mana and high magic attack.
+Since the three of them can barely defend the town together, they decide their best chance of survival is to send someone out to take out the monsters single-handed.
 
-The Zombie will use the drain spell which heals half of damage dealt. It will start with a rodent of underwhelming size pet. It will be well rounded and slow.
+## STARTING OUT
 
-## Game Rules
+You will pick a village to use for this game.
+Each villager has a different class and abilities
 
-The character's damage is calculated using thie algorithm:
+### CLASSES
 
-- if a character has an activePet, we take the activePet's damage as starting value and add it to the character's magic damage.
-- if a character is casting a spell, we take the spell's damage and add it to the character's magic damage.
-- if a character has neither an activePet, nor a spell, we take their weapon's damage, and add it to the character's attack damage.
+Sorcerer: 
+- Magic Based Attacks
+- Summons Spirits (which do magic damage)
+- Uses Spells
 
-## Pet Logic
+Hunter:
+- Physical Attacks using Bow and Arrow
+- Summons Familiars (which do magic damage)
+- Also has a knife
 
-A character can have an array of pets but can only summon one active pet.
+SwordPerson:
+- Swords
+- Dual Swords
+- ~~Quad Swords~~ - too many
 
-## Spell Logic
+## GAME RULES
 
-If spell has positive power value, it's damaging. If it has negative power, it's healing.
+general:
+- you cannot use a weapon and spell in the same turn
+
+Weapons
+- you can only have one weapon equipped at a time, with one class exception.
+- You CANNOT change weapons in battle
+
+Spells
+- The Sorcerer class starts out with two spells. More can be unlocked.
+- You CAN change spells in battle
+
+Summoning
+- Familiars and Spirits are summoned once battle starts and disappear at the end
+- You may only have one spawned at a time.
+- they will attack the enemy once per turn.
+
+## STARTING OUT
+
+You will start at the gates of town, with your first enounter imminent.
+
+While you will not have many items, you may adjust your currently selected weapon or spell before battle.
+
+You will level up after a sucessful kill.
+
+You may come across new spells or weapons
+

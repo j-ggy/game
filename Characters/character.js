@@ -3,14 +3,13 @@ const Spells = require("../Spells/spells");
 //main functions for character creation, damage, pets, weapons and spells.
 
 class Character {
-    constructor(name, className, attack, magic, defense, speed, health, mana) {
+    constructor(name, className, attack, magic, defense, health, mana) {
         this.name = name;
         this.className = className;
         this.level = 1;
         this.attack = attack;
         this.magic = magic;
         this.defense = defense;
-        this.speed = speed;
         this.health = health;
         this.mana = mana;
         this.weapons = [];
@@ -19,31 +18,27 @@ class Character {
         this.activePet = null;
         this.activeSpell = null;
         this.activeWeapon = null;
-        this.lastHP = null;
     }
     levelUp() {
         this.level += 1;
-        if (this.className === "fencer") {
+        if (this.className === "Swordperson") { //fix the values 
             this.attack += 2;
             this.magic += 1;
             this.defense += 4;
-            this.speed += 3;
             this.health += 20;
             this.mana += 5;
 
-        } else if (this.className === "mage") {
+        } else if (this.className === "Hunter") {
             this.attack += 1;
             this.magic += 2;
             this.defense += 2;
-            this.speed += 2;
             this.health += 10;
             this.mana += 20;
 
-        } else if (this.className === "zombie") {
+        } else if (this.className === "Sorcerer") {
             this.attack += 3;
             this.magic += 3;
             this.defense += 3;
-            this.speed += 3;
             this.health += 15;
             this.mana += 15;
         }
@@ -52,15 +47,23 @@ class Character {
     getDamage() {
         var damageDealt = 0;
         var healing = 0;
+
+        // to do: pass in attack or spell. If attack then weapon damage
+        // if spell spell damage
+        // plus summon
+
+        //redo drain spell
+
+
         if (this.activePet) {
             const petDamage = this.activePet.petDmg;
             const magicDamage = this.magic;
             damageDealt = magicDamage + petDamage;
         }         
-        if (this.activeSpell && this.mana > this.activeSpell.manaCost) {
+        if (this.activeSpell && this.mana >= this.activeSpell.manaCost) {
 
             const spellPower = this.activeSpell.power;
-            const powerSign = Math.sign(this.activeSpell.power);
+            const powerSign = Math.sign(spellPower);
 
             if (powerSign === 1) {
                 damageDealt += spellPower;
@@ -72,10 +75,6 @@ class Character {
             if (this.mana < this.activeSpell.manaCost) {
                 activeSpell = null;
             }
-        if (this.className === "zombie") {
-            this.lastHP = this.health;
-            healing = (damageDealt/2);
-        }
         }
         else if (this.activePet === null && this.activeSpell === null) {
             if (this.activeWeapon) {

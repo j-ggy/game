@@ -1,30 +1,34 @@
-const Fencer = require("./Characters/fencer");
-const Zombie = require("./Characters/zombie");
-const Mage = require("./Characters/mage");
+//import general
+const prompt = require("prompt-promise");
+
+// import characters
+const Swordperson = require("./Characters/swordperson");
+const Hunter = require("./Characters/hunter");
+const Sorcerer = require("./Characters/sorcerer");
+
+//import mobs
+const justSomeDude = require("./Mobs/justSomeDude");
+const config = require("./config");
+// const x = require("./x");
+// const x = require("./x");
+// const x = require("./x");
 
 
 //Character creation
-const fencer = new Fencer('Latrine');
-const zombie = new Zombie('Rig');
-const mage = new Mage('Muff');
+const swordperson = new Swordperson('');
+const hunter = new Hunter('');
+const sorcerer = new Sorcerer('');
 
-//Equiping characters with weapons, spells and summoning pets.
-fencer.equipWeapon("rapier");
-zombie.summonPet("ROUS");
-mage.summonPet("smaller mage");
-mage.selectSpell("lightningbolt");
-zombie.selectSpell("drain");
+const badGuy= justSomeDude;
 
 
-//Logging getDamage() function for each character
-console.log(mage.name + " does " + mage.getDamage() + " magic damage!");
-console.log(mage.activePet.petDmg + " from pet. " + mage.activeSpell.power + " from spell. " + mage.magic + " from base damage.")
-console.log(zombie.name + " does " + zombie.getDamage()+ " magic damage!");
-console.log(zombie.name + " healed " + (zombie.health - zombie.lastHP));
-console.log(fencer.name + " does " + fencer.getDamage() + " physical damage! ..... good job");
+//main game loop
+function gameLoop() {
+    //intro and class selection
+    console.log(`Welcome to ${config.gameName}`)
+    console.log(`~~story time~~`)
+    prompt("Input number to Select Class [1]Hunter, [2]Swordperson, [3]Sorcerer:")
+    
+};
 
-//Test for healing functionality
-mage.selectSpell("heal");
-console.log(mage.health, " hp");
-console.log(mage.getDamage());
-console.log(mage.health, " hp");
+gameLoop();
