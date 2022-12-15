@@ -1,8 +1,16 @@
 const config =  {
-    HunterClassName: "Hunter",
-    SorcererClassName: "Sorcerer",
-    SwordpersonClassName: "Swordperson",
-    gameName: "GAMENAME"
+    hunterClassName: "Hunter",
+    sorcererClassName: "Sorcerer",
+    swordpersonClassName: "Swordperson",
+    classChoice: null,
+    gameName: "GAMENAME",
+    badEntryText: "I'm sorry, that was not a valid entry.",
+    validChoice: null,
+    charName: ""
+}
+
+function choiceReset() {
+    config.validChoice = null;
 }
 
 module.exports = config;
