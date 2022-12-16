@@ -6,7 +6,7 @@ const staff = require("../Weapons/staffs/staff");
 
 class Sorcerer extends Character {
     constructor(name) {
-        super(name, "Sorcerer", 2, 8, 3, 100, 200);
+        super(name, "Sorcerer", 2, 8, 1, 100, 200);
         this.weapons.push(staff);
         this.spells.push(lightning, heal);
     }

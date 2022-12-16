@@ -28,8 +28,8 @@ Hunter:
 - Also has a knife
 
 SwordPerson:
-- Swords
-- Dual Swords
+- Sword
+- ~~Dual Swords~~ - to be implemented
 - ~~Quad Swords~~ - too many
 
 ## GAME RULES
@@ -43,7 +43,6 @@ Weapons
 
 Spells
 - The Sorcerer class starts out with two spells. More can be unlocked.
-- You CAN change spells in battle
 
 Summoning
 - Familiars and Spirits are summoned once battle starts and disappear at the end

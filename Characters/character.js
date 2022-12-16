@@ -1,4 +1,5 @@
 const Spells = require("../Spells/spells");
+const config = require("../config");
 
 //main functions for character creation, damage, pets, weapons and spells.
 
@@ -12,6 +13,7 @@ class Character {
         this.defense = defense;
         this.health = health;
         this.mana = mana;
+        this.maxHealth = health;
         this.weapons = [];
         this.pets = [];
         this.spells = [];
@@ -26,20 +28,24 @@ class Character {
             this.magic += 1;
             this.defense += 4;
             this.health += 20;
+            this.maxHealth += 20;
             this.mana += 5;
+            
 
         } else if (this.className === "Hunter") {
             this.attack += 1;
             this.magic += 2;
             this.defense += 2;
             this.health += 10;
+            this.maxHealth += 10;
             this.mana += 20;
 
         } else if (this.className === "Sorcerer") {
-            this.attack += 3;
-            this.magic += 3;
-            this.defense += 3;
+            this.attack += 2;
+            this.magic += 2;
+            this.defense += 2;
             this.health += 15;
+            this.maxHealth += 15;
             this.mana += 15;
         }
     }
@@ -48,42 +54,12 @@ class Character {
         var damageDealt = 0;
         var healing = 0;
 
-        // to do: pass in attack or spell. If attack then weapon damage
-        // if spell spell damage
-        // plus summon
-
-        //redo drain spell
-
+        damageDealt += (this.attack + this.activeWeapon.damage);
 
         if (this.activePet) {
             const petDamage = this.activePet.petDmg;
-            const magicDamage = this.magic;
-            damageDealt = magicDamage + petDamage;
-        }         
-        if (this.activeSpell && this.mana >= this.activeSpell.manaCost) {
-
-            const spellPower = this.activeSpell.power;
-            const powerSign = Math.sign(spellPower);
-
-            if (powerSign === 1) {
-                damageDealt += spellPower;
-            } else if (powerSign === -1) {
-                healing -= spellPower;
-            }
-            
-            this.mana = this.mana - this.activeSpell.manaCost;
-            if (this.mana < this.activeSpell.manaCost) {
-                activeSpell = null;
-            }
-        }
-        else if (this.activePet === null && this.activeSpell === null) {
-            if (this.activeWeapon) {
-                damageDealt = this.activeWeapon.damage + this.attack;                
-            } else if (!this.activeWeapon) {
-                damageDealt=0;
-            }
-        }
-        this.health += healing;
+            damageDealt += petDamage;
+        } 
         return damageDealt;
     }
 
@@ -95,12 +71,17 @@ class Character {
             }
         } 
     }  
-    selectSpell(spellName) {
-        for (let i=0; i < this.spells.length; i++) {
-            const spell = this.spells[i];
-            if(spell.name === spellName) {
-                this.activeSpell = spell;
-            }
+    cast (spellNo, lvXMob) {
+        if (player.mana >= player.spells[spellNo].manaCost) {
+            if (Math.sign(player.spells[spellNo].power) = 1) {
+                lvXMob.health -= (player.spells[spellNo].power + player.magic)
+                player.health -= (lvXMob.damage - player.defense)
+            } else if (Math.sign(player.spells[spellNo].power) = -1)
+                player.health -= player.spells[spellNo].power;
+                player.health -= (lvXMob.damage - player.defense);
+        }   
+        else {
+            console.log("Not enough mana")
         }
     }
     equipWeapon(weaponName) {

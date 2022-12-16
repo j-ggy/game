@@ -6,11 +6,12 @@ const config =  {
     gameName: "GAMENAME",
     badEntryText: "I'm sorry, that was not a valid entry.",
     validChoice: null,
-    charName: ""
-}
-
-function choiceReset() {
-    config.validChoice = null;
+    validChoice2: null,
+    charName: "",
+    mobs: [],
+    activeMob: null,
+    action: null,
+    rng: 0
 }
 
 module.exports = config;
