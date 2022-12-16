@@ -101,8 +101,8 @@ class Character {
             return damage;
     }
     getSpellDamage() {
-        let damage=0; 
-        let heal=0;
+        let damage; 
+        let heal;
         if (player.activePet) {
             damage += player.activePet.damage;
         }

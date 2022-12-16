@@ -52,21 +52,21 @@ function createCharacter(name, classNo) {
     } 
 }
 
-function summonMob() {
+function summonMob(level) {
     config.rng = Math.random();
-    if (config.mobLv == 1) {        
+    if (level == 1) {        
         if (config.rng >= 0.5) {
             config.activeMob = rabbit;
         } else if (config.rng < 0.5) {
             config.activeMob = justSomeDude;
         }
-    } else if (config.mobLv == 2) {
+    } else if (level == 2) {
         if (config.rng >= 0.5) {
             config.activeMob = panda;
         } else if (config.rng < 0.5) {
             config.activeMob = boulder;
         }
-    } else if (config.mobLv == 3) {
+    } else if (level == 3) {
         config.activeMob = spider;
     }
 }
@@ -113,9 +113,18 @@ async function fight() {
             } else {
                 await actionPrompt(`[1]:Use Spell, [2]:Switch spell: `, [1,2]);
                 if (config.action == 1) {
-                    config.activeMob.health = player.getSpellDamage();
-                    player.health -= (config.activeMob.health - player.defense);
-                    console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
+                    if(player.activeSpell) {
+                        if (player.mana >= player.activeSpell.manaCost) {
+                            config.activeMob.health = player.getSpellDamage();
+                            player.health -= (config.activeMob.health - player.defense);
+                            console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
+                        } else {
+                            console.log("Not enough mana")
+                        }
+                    } else {
+                        console.log("No active spell set");
+                    }
+
                 } else if (config.action == 2) {
                     await player.equipSpell();
             }
@@ -136,9 +145,8 @@ async function fight() {
         config.mobLv += 1;
         summonMob();
         player.levelUp();
-        player.health = player.maxhealth;
+        player.health = player.maxHealth;
     }
-    console.log("test")
 }
 async function gameLoop() {
     console.log(`Welcome to ${config.gameName}`)
@@ -160,11 +168,20 @@ async function gameLoop() {
     console.log("Charging through, you fail to notice yourself break the locking mecehanism.");
     console.log("You see a figure ahead.\n Clearly one of Tarantulatar's minions.");
     
-    summonMob();
-    for (let i=0; i<3; i++){
-        console.log(`your next enemy is ${config.activeMob.name}`)
-        await fight();
-    }
+  
+    summonMob(1);
+    console.log(`your next enemy is ${config.activeMob.name}`)
+    await fight();
+
+    summonMob(2);
+    console.log(`your next enemy is ${config.activeMob.name}`)
+    await fight();
+
+    summonMob(3);
+    console.log(`your next enemy is ${config.activeMob.name}`)
+    await fight();
+
+
     if (player.health > 0 && config.activeMob.health <= 0) {
         console.log(`Congrats, ${player.name}, you won!`)
     } else {
