@@ -1,5 +1,6 @@
-const Spells = require("../Spells/spells");
 const config = require("../config");
+const prompt = require("prompt-promise");
+const pet = require("../Pets/pet");
 
 //main functions for character creation, damage, pets, weapons and spells.
 
@@ -20,6 +21,7 @@ class Character {
         this.activePet = null;
         this.activeSpell = null;
         this.activeWeapon = null;
+        this.potions = 3;
     }
     levelUp() {
         this.level += 1;
@@ -50,48 +52,96 @@ class Character {
         }
     }
 
+    async equipWeapon() {
+        for (let i=0; i < player.weapons.length; i++) {
+            console.log(`[${[i]}]:${player.weapons[i].name}`)
+        }
+        while(true) {
+            config.action = Number(await prompt(`Choose a weapon`));
+            if (config.action <= player.weapons.length) {
+                player.activeWeapon = player.weapons[config.action];
+                break;
+            } else {
+                console.log(config.invalidEntry);
+            }
+        }
+        console.log(player.activeWeapon.name);
+    }
+    async equipSpell() {
+        if (player.className == config.sorcererClassName) {
+            for (let i=0; i < player.spells.length; i++) {
+                console.log(`[${[i]}]:${player.spells[i].name}`)
+            }
+            while(true) {
+                config.action = Number(await prompt(`Type the number of the spell:`));
+                if (config.action <= player.spells.length) {
+                    player.activeSpell = player.spells[config.action];
+                    break;
+                } else {
+                    console.log(config.invalidEntry);
+                }
+            }
+            console.log(player.activeSpell);
+        } else {
+            console.log(`A ${player.className} can't use spells!`);
+        }
+
+    }
+
     getDamage() {
-        var damageDealt = 0;
-        var healing = 0;
+        let damage = player.activeWeapon.damage + player.attack - config.activeMob.defense;
+        let dTaken = Math.max(0, config.activeMob.damage - player.defense)
+            if (player.activePet) {
+                damage += player.activePet.damage;
+            }
+            console.log(`You do ${damage} damage and recieved ${dTaken} damage.`);
 
-        damageDealt += (this.attack + this.activeWeapon.damage);
-
-        if (this.activePet) {
-            const petDamage = this.activePet.petDmg;
-            damageDealt += petDamage;
-        } 
-        return damageDealt;
+            player.health -= dTaken;
+            config.activeMob.health -=damage;
+            return damage;
+    }
+    getSpellDamage() {
+        let damage=0; 
+        let heal=0;
+        if (player.activePet) {
+            damage += player.activePet.damage;
+        }
+        let spellPower = Math.sign(player.activeSpell.power);
+            if (spellPower = 1) {
+                damage = (player.getSpellDamage() - config.activeMob.defense);
+                console.log(`You do ${damage} damage`)
+                return damage;
+            } else if (spellPower = -1) {
+                heal -= player.activeSpell.power;
+                console.log(`Healed for ${heal} HP`)
+                return damage;
+            }
     }
 
-    summonPet(petName) {
-        for (let i=0; i < this.pets.length; i++) {
-            const pet = this.pets[i];
-            if(pet.name === petName) {
-                this.activePet = pet;
+    usePotion() {
+        if (player.potions > 0) {
+            player.health += 25;
+            player.potions -= 1;
+        } else {
+            console.log("You got no potions.")
+        }
+    }
+
+    async summonPet() {
+        for (let i=0; i < player.pets.length; i++) {
+            console.log(`[${[i]}]:${player.pets[i].name}`)
+        }
+        while(true) {
+            config.action = Number(await prompt(`Choose a Summon`));
+            if (config.action <= player.pets.length) {
+                player.activePet = player.pets[config.action];
+                break;
+            } else {
+                console.log(config.invalidEntry);
             }
-        } 
+        }
+        console.log(player.activePet.name);
     }  
-    cast (spellNo, lvXMob) {
-        if (player.mana >= player.spells[spellNo].manaCost) {
-            if (Math.sign(player.spells[spellNo].power) = 1) {
-                lvXMob.health -= (player.spells[spellNo].power + player.magic)
-                player.health -= (lvXMob.damage - player.defense)
-            } else if (Math.sign(player.spells[spellNo].power) = -1)
-                player.health -= player.spells[spellNo].power;
-                player.health -= (lvXMob.damage - player.defense);
-        }   
-        else {
-            console.log("Not enough mana")
-        }
-    }
-    equipWeapon(weaponName) {
-        for (let i=0; i < this.weapons.length; i++) {
-            const weapon = this.weapons[i];
-            if (weapon.name === weaponName) {
-                this.activeWeapon = weapon;
-            }
-        }
-    }
 }
 
 module.exports = Character;

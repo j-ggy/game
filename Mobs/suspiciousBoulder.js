@@ -1,5 +1,5 @@
 const Mob = require("./mobs");
 
-const suspiciousBoulder = new Mob("A Suspicious Boulder",10, 9, 69);
+const boulder = new Mob("A Suspicious Boulder",10, 9, 69);
 
-module.exports = suspiciousBoulder;
+module.exports = boulder;

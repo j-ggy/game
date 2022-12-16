@@ -1,4 +1,3 @@
-//import general
 const prompt = require("prompt-promise");
 const config = require("./config");
 
@@ -14,260 +13,163 @@ const panda = require("./Mobs/rabidPanda");
 const boulder = require("./Mobs/suspiciousBoulder");
 const spider = require("./Mobs/tarantula");
 
+// alright that didn't work
+// lets actually use some functions this time
 
-//main game loop
-async function gameLoop() {
-
-    //intro and class selection
-    console.log(`Welcome to ${config.gameName}`)
-    console.log(`~~insert intro~~`)
-    while (true) {
-        config.classChoice = await prompt("Input number to Select Class [1]Hunter, [2]Swordperson, [3]Sorcerer:")
-        if (config.classChoice == 1) {
-            config.classChoice = config.hunterClassName;
-            console.log(`You have picked ${config.classChoice}.`); 
-            break;
-        } else if (config.classChoice == 2) {
-            config.classChoice = config.swordpersonClassName;
-            console.log(`You have picked ${config.classChoice}.`);
-            break;
-        }
-        else if (config.classChoice == 3) {
-            config.classChoice = config.sorcererClassName;
-            console.log(`You have picked ${config.classChoice}.`); 
+async function actionPrompt(displayText, acceptedInput) {
+    while(true) {
+        config.action = Number(await prompt(displayText + " "));
+        if (acceptedInput.includes(config.action)) {
             break;
         } else {
-            console.log(config.classChoice + " is not a correct input.")
+            console.log(config.invalidEntry);
         }
     }
-    
-    // Get a name for the character
-    config.validChoice=false;
+}
+async function getName() {
     while (true) {
         config.charName = String(await prompt("Please enter a character name: "));
-        if (config.charName.length <= 15 && config.charName.length >= 1) {
-            console.log(`Greetings ${config.charName}!`)            
+        if (config.charName.length <= 15 && config.charName.length >= 1) {         
             break;
         } else {
             console.log("Please input a name between 1 and 15 characters.")
         }
     }
-    
-    //Character creation
-    let player;
-    if (config.classChoice == config.hunterClassName) {
-        player = new Hunter(config.charName);  
-        console.log(player);
-    } else if (config.classChoice == config.swordpersonClassName) {
-        player = new Swordperson(config.charName);
-        console.log(player);
-    } else if (config.classChoice == config.sorcererClassName) {
-        player = new Sorcerer(config.charName);  
-        console.log(player);
+}
+function createCharacter(name, classNo) {
+    if (classNo == 1) {
+        player = new Hunter(name);
+        config.classChoice = config.hunterClassName;
+        return player;
+    } else if (classNo == 2) {
+        player = new Swordperson(name);
+        config.classChoice = config.swordpersonClassName;
+        return player;
+    } else if (classNo == 3) {
+        player = new Sorcerer(name);
+        config.classChoice = config.sorcererClassName;
+        return player;
+    } 
+}
+
+function summonMob() {
+    config.rng = Math.random();
+    if (config.mobLv == 1) {        
+        if (config.rng >= 0.5) {
+            config.activeMob = rabbit;
+        } else if (config.rng < 0.5) {
+            config.activeMob = justSomeDude;
+        }
+    } else if (config.mobLv == 2) {
+        if (config.rng >= 0.5) {
+            config.activeMob = panda;
+        } else if (config.rng < 0.5) {
+            config.activeMob = boulder;
+        }
+    } else if (config.mobLv == 3) {
+        config.activeMob = spider;
     }
-    
-    //first action 
-    config.validChoice=false;
+}
+
+async function villageLoop() {
     while (true) {
-        console.log("What would you like to do?")
-        config.action = Number(await prompt("[1]:Check around the village [2]:Seek a Battle [3]:Equip a weapon"));
-        //random event
-        if (config.action == 1) { 
+        await actionPrompt("[1]:Check around the village [2]:Seek a Battle [3]:Equip a weapon [4]: Equip a Spell", [1,2,3,4]);
+        
+        if (config.action == 1) {           //RNG for checking around village
             config.rng = Math.random();
             if (config.rng >= 0.5) {
-                console.log("You stepped in something!")
-                
+                console.log("You stepped in poop. -2HP")
+                player.health -= 2;
             } else if (config.rng < 0.5) {
-                console.log("You found nothing!")
+                console.log("You found nothing.")
             }
-        } 
-        //continues to next part in story
-        else if (config.action == 2) {
-            break; 
-        } 
-        // equip weapon(s)
-        else if (config.action == 3) {
-            for (let i=0; i <player.weapons.length; i++) {
-                console.log(`${i}: ${player.weapons[i].name}`);
-            }
-            while (true) {
-                const activeWeapon = await prompt(`Select a weapon:`)
-                if (activeWeapon <= player.weapons.length) {
-                    player.activeWeapon = player.weapons[activeWeapon];
-                    break;
-                } else {
-                    console.log(config.badEntryText);
-                }
-            }
-            console.log(player.activeWeapon.name + " equipped!");
-
-        // Spell equiping    
-        } 
-    //     else if (config.action == 4) {
-    //         if (player.className == config.swordpersonClassName || player.className == config.hunterClassName) {
-    //             console.log(`A ${player.className} can't equip spells!`)
-    //         } else {     
-    //             console.log("Your Spells:")      
-    //             for (let i=0; i<player.spells.length; i++) {                    
-    //                 console.log(`[${i}]:${player.spells[i].name}`)                   
-    //         }
-    //         while (true) {
-    //             const selectedSpell = await prompt(`Select a spell: `); 
-    //             if (selectedSpell <= player.spells.length) {
-    //             player.activeSpell = player.spells[selectedSpell];
-    //             player.selectSpell();
-    //             }
-    //         }
-    //     }
-    // }
+        } else if (config.action == 2) {    //head directly to battle, must use this option to exit loop
+            if (player.activeWeapon == null) {
+                console.log("You should probably equip a weapon before battle!");
+            }   else {
+                break;
+            }                        
+        } else if (config.action == 3) {
+            await player.equipWeapon();     //equip weapon
+            console.log(`You equipped a ${player.activeWeapon.name}`)
+        } else if (config.action == 4) {
+            await player.equipSpell();      //equip spell
+        }
     }
-    config.rng = 0;
+}
 
+async function fight() {
+    while (player.health > 0 && config.activeMob.health > 0) {
+        await actionPrompt("[1]:Fight, [2]:Spell, [3]:Summon, [4]:Potion", [1,2,3,4]);
+
+        if (config.action == 1) {
+            player.getDamage();
+
+            console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
+        } else if (config.action == 2) {
+            if (player.classChoice != player.sorcererClassName) {
+                console.log("You can't cast spells!")
+                continue;
+            } else {
+                await actionPrompt(`[1]:Use Spell, [2]:Switch spell: `, [1,2]);
+                if (config.action == 1) {
+                    config.activeMob.health = player.getSpellDamage();
+                    player.health -= (config.activeMob.health - player.defense);
+                    console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
+                } else if (config.action == 2) {
+                    await player.equipSpell();
+            }
+            }
+            
+        } else if (config.action == 3) {
+            await player.summonPet();
+            console.log(`You summoned a ${player.activePet.name}!`)
+        } else if (config.action == 4) {
+            player.usePotion();
+            console.log(`You have ${player.potions} potions left`)
+        }
+    } if (player.health <= 0) {
+        console.log("You lose");
+        throw Error("Game Over");
+    } else if (config.activeMob.health <= 0) {
+        console.log(`Nice work! You beat a ${config.activeMob.name}`)
+        config.mobLv += 1;
+        summonMob();
+        player.levelUp();
+        player.health = player.maxhealth;
+    }
+    console.log("test")
+}
+async function gameLoop() {
+    console.log(`Welcome to ${config.gameName}`)
+
+    //Character creation and class picker
+    await getName();
+    await actionPrompt("Please select your class:\n[1]: Hunter, [2]:Swordperson, [3]:Sorcerer.", [1,2,3]); 
+    let player;
+    player = createCharacter(config.charName, config.action);
+    console.log(`\nGreetings ${config.charName} the ${config.classChoice}!`) 
 
     console.log(`You feel ready to take on whatever is in your way.`);
-    console.log(`Hastily, you head towards the village gate to begin your journey`);
-    if (player.activeWeapon == null) {
-        console.log(`A voice calls out from behind "Don't forget to equip your weapons!"`);
-        
-        for (let i=0; i <player.weapons.length; i++) {
-        console.log(`${i}: ${player.weapons[i].name}`);
-        }
 
-        while (true) {
-            const activeWeapon = await prompt(`Select a weapon:`)
-            if (activeWeapon <= player.weapons.length) {
-                player.activeWeapon = player.weapons[activeWeapon];
-                break;
-            } else {
-                console.log(badEntryText);
-            }
-        }
-        console.log(player.activeWeapon.name + " equipped!");
-    }
-    console.log("You approach the village gate with little trepidation.");
+    //Time to equip spell, weapons, or take a look around the village
+    console.log("What would you like to do?")
+    await villageLoop();
+
+    console.log(`Hastily, you head towards the village gate to begin your journey`);
     console.log("Charging through, you fail to notice yourself break the locking mecehanism.");
     console.log("You see a figure ahead.\n Clearly one of Tarantulatar's minions.");
     
-                                //battle #1
-    config.rng = Math.random();
-    let lv1Mob;
-    while (true) {
-        if (config.rng > 0.5) {
-        lv1Mob = rabbit;
-        console.log(`You begin to fight a ${rabbit.name}`)
-        } else if (config.rng <= 0.5  && config.rng > 0.05) {
-        lv1Mob = justSomeDude;
-        console.log(`You begin to fight a ${justSomeDude.name}`)
-        } else if (config.rng <= 0.05) {
-        console.log("The creature runs off in fear of your presence!")
-        break;
-        }
-        while (player.health > 0 && lv1Mob.health > 0) {
-        while (true) {
-            config.action = await prompt("[1]: Attack, [2]:Spell, [3]:Summon")
-            if (config.action == 1 || config.action == 2 || config.action == 3) {
-                console.log(config.action);
-                break;
-            }
-        }
-        if (config.action ==1) {
-            lv1Mob.health -= player.getDamage() - lv1Mob.defense
-            player.health -= lv1Mob.damage  - player.defense
-            console.log(player.health, lv1Mob.health);
-            continue;
-        } else if (config.action == 2 && player.className == config.sorcererClassName) {
-            while (true) {
-                for (let i=0; i<=player.spells.length; i++) {
-                    console.log(`[${i}]:${player.spells[i]}`)
-                }
-                config.action = await prompt(`Select spell.`)
-                if (config.action <= player.spells.length) {
-                    console.log(cast(config.action, lv1Mob));
-                    continue;
-                }
-            }
-        } else if (config.action == 3) {
-            //summon pet
-            continue;
-        }
-        }
-        if (player.health <= 0) {
-        console.log("You lost!");
-        throw Error("Lose");
-        } else if (lv1Mob.health <= 0) {
-        console.log("Congrats on beating a " + lv1Mob.name);
-        player.levelUp();
-        break;
-        }
+    summonMob();
+    for (let i=0; i<3; i++){
+        console.log(`your next enemy is ${config.activeMob.name}`)
+        await fight();
     }
-
-    while (true) {
-        config.action = await prompt("[1]:Continue, or [2]:Rest");
-        if (config.action == 1) {
-            break;
-        } else if (config.action == 2)  {
-            let heal = player.maxHealth - player.health;
-            player.health += heal;
-            console.log(`You feel rested at ${player.health} HP.`)
-        }
+    if (player.health > 0 && config.activeMob.health <= 0) {
+        console.log(`Congrats, ${player.name}, you won!`)
+    } else {
+        console.log("how'd you get here?")
     }
-    console.log("Filled with confidence, you rush down the path towards the monster's den")
-    
-                                //battle #2
-    config.rng = Math.random();
-    let lv2Mob;
-    while (true) {
-        if (config.rng > 0.5) {
-        lv2Mob = panda;
-        console.log(`You begin to fight a ${lv2Mob.name}`)
-        } else if (config.rng <= 0.5  && config.rng > 0.05) {
-        lv1Mob = boulder;
-        console.log(`You begin to fight a ${lv2Mob.name}`)
-        } else if (config.rng <= 0.05) {
-        console.log("The creature runs off in fear of your presence!")
-        break;
-        }
-        while (player.health > 0 && lv2Mob.health > 0) {
-        while (true) {
-            config.action = await prompt("[1]: Attack, [2]:Spell, [3]:Summon")
-            if (config.action == 1 || config.action == 2 || config.action == 3) {
-                console.log(config.action);
-                break;
-            }
-        }
-        if (config.action ==1) {
-            lv2Mob.health -= player.getDamage() - lv2Mob.defense
-            player.health -= lv2Mob.damage  - player.defense
-            console.log(player.health, lv2Mob.health);
-            continue;
-        } else if (config.action == 2) {
-            //use or equip new
-            continue;
-        } else if (config.action == 3) {
-            //summon pet
-            continue;
-        }
-        }
-        if (player.health <= 0) {
-        console.log("You lost!");
-        throw Error("You lost");
-        } else if (lv2Mob.health <= 0) {
-        console.log("Congrats on beating a " + lv2Mob.name);
-        player.levelUp();
-        break;
-        }
-    }
-
-    while (true) {
-        config.action = await prompt("[1]:Continue, or [2]:Rest");
-        if (config.action == 1) {
-            break;
-        } else if (config.action == 2)  {
-            player.health += 20;
-            console.log(`You feel rested at ${player.health} HP.`)
-        }
-    }
-
 }
 
 gameLoop();

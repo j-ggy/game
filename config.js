@@ -4,14 +4,13 @@ const config =  {
     swordpersonClassName: "Swordperson",
     classChoice: null,
     gameName: "GAMENAME",
-    badEntryText: "I'm sorry, that was not a valid entry.",
-    validChoice: null,
-    validChoice2: null,
+    invalidEntry: "I'm sorry, that was not a valid entry.",
     charName: "",
     mobs: [],
     activeMob: null,
+    mobLv: 1,
     action: null,
-    rng: 0
+    rng: null
 }
 
 module.exports = config;
