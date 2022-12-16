@@ -1,6 +1,7 @@
 const config = require("../config");
 const prompt = require("prompt-promise");
 const pet = require("../Pets/pet");
+const heal = require("../Spells/heal");
 
 //main functions for character creation, damage, pets, weapons and spells.
 
@@ -100,18 +101,19 @@ class Character {
             config.activeMob.health -=damage;
             return damage;
     }
-    getSpellDamage() {
-        let damage; 
-        let heal;
+    getSpellDamage() { 
+        let damage =0;
+        let heal =0;
         if (player.activePet) {
             damage += player.activePet.damage;
-        }
+        } 
         let spellPower = Math.sign(player.activeSpell.power);
-            if (spellPower = 1) {
-                damage = (player.getSpellDamage() - config.activeMob.defense);
+            if (spellPower == 1) {
+                damage += (player.activeSpell.power - config.activeMob.defense);
                 console.log(`You do ${damage} damage`)
+                
                 return damage;
-            } else if (spellPower = -1) {
+            } else if (spellPower == -1) {
                 heal -= player.activeSpell.power;
                 console.log(`Healed for ${heal} HP`)
                 return damage;

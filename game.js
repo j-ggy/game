@@ -115,8 +115,8 @@ async function fight() {
                 if (config.action == 1) {
                     if(player.activeSpell) {
                         if (player.mana >= player.activeSpell.manaCost) {
-                            config.activeMob.health = player.getSpellDamage();
-                            player.health -= (config.activeMob.health - player.defense);
+                            config.activeMob.health = (config.activeMob.health - player.getSpellDamage());
+                            player.health -= (config.activeMob.damage - player.defense);
                             console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
                         } else {
                             console.log("Not enough mana")
@@ -173,17 +173,19 @@ async function gameLoop() {
     console.log(`your next enemy is ${config.activeMob.name}`)
     await fight();
 
+    console.log("Filled with confidence, you rush down the path towards the monster's den")
     summonMob(2);
     console.log(`your next enemy is ${config.activeMob.name}`)
     await fight();
 
+    console.log("Delving deeper into ")
     summonMob(3);
     console.log(`your next enemy is ${config.activeMob.name}`)
     await fight();
 
 
     if (player.health > 0 && config.activeMob.health <= 0) {
-        console.log(`Congrats, ${player.name}, you won!`)
+        console.log(`Congrats, ${player.name}, you killed one of the Spider Queen's recent babies. You have little time befo---\n You Have Died.`)
     } else {
         console.log("how'd you get here?")
     }
