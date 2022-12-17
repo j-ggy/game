@@ -19,13 +19,13 @@ Each villager has a different class and abilities
 
 Sorcerer: 
 - Magic Based Attacks
-- Summons Spirits (which do magic damage)
-- Uses Spells
+- Summons Spirits (which do damage)
+- Only Spell User
 
 Hunter:
 - Physical Attacks using Bow and Arrow
-- Summons Familiars (which do magic damage)
-- Also has a knife
+- Summons Familiars (which do damage)
+- ~~Also has a knife~~ to be added
 
 SwordPerson:
 - Sword

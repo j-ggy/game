@@ -73,7 +73,7 @@ function summonMob(level) {
 
 async function villageLoop() {
     while (true) {
-        await actionPrompt("[1]:Check around the village [2]:Seek a Battle [3]:Equip a weapon [4]: Equip a Spell", [1,2,3,4]);
+        await actionPrompt("[1]:Check around the village [2]:Seek a Battle [3]:Equip a weapon [4]:Equip a Spell", [1,2,3,4]);
         
         if (config.action == 1) {           //RNG for checking around village
             config.rng = Math.random();
@@ -117,6 +117,7 @@ async function fight() {
                         if (player.mana >= player.activeSpell.manaCost) {
                             config.activeMob.health = (config.activeMob.health - player.getSpellDamage());
                             player.health -= (config.activeMob.damage - player.defense);
+                            console.log(`${config.activeMob.name} did ${(config.activeMob.damage - player.defense)} damage`)
                             console.log(`Your health: ${player.health}. Enemy Health: ${config.activeMob.health}`);
                         } else {
                             console.log("Not enough mana")
