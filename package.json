@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "prompt-promise": "^1.0.3"
+  },
+  "name": "game",
+  "description": "- Text style - Turn based - Tarantula?",
+  "version": "1.0.0",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j-ggy/game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/j-ggy/game/issues"
+  },
+  "homepage": "https://github.com/j-ggy/game#readme"
+}
