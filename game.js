@@ -179,7 +179,7 @@ async function gameLoop() {
     console.log(`your next enemy is ${config.activeMob.name}`)
     await fight();
 
-    console.log("Delving deeper into ")
+    console.log("Delving deep into the monster den you hear 4 sets of hairy legs creeping towards you")
     summonMob(3);
     console.log(`your next enemy is ${config.activeMob.name}`)
     await fight();
